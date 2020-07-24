@@ -1,11 +1,11 @@
 package cn.locusc.exclusive.utils.server.format.controller;
 
+import cn.locusc.exclusive.utils.common.api.Result;
 import cn.locusc.exclusive.utils.server.format.service.implementation.YmlAndPropertiesImpl;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author Jay Chan
@@ -13,23 +13,37 @@ import java.util.List;
  * 16:47 2020/7/23
  **/
 @RestController
-@RequestMapping("/api")
 public class YmlAndPropertiesController {
 
     @Resource
     private YmlAndPropertiesImpl ymlAndProperties;
 
     @PostMapping("/ymlToProperties")
-    public JSONObject ymlToProperties(@RequestBody JSONObject content) {
-        JSONObject jsonObject = new JSONObject();
+    public Result<?> ymlToProperties(@RequestBody JSONObject jsonObject) {
+        Result<?> result = new Result<>();
         try {
-            List<String> list = ymlAndProperties.yml2PropertiesService(content.getString("rightYamlValue"));
-            jsonObject.put("status", true);
-            jsonObject.put("properties", JSONObject.toJSONString(list));
+            String strings = ymlAndProperties.yml2PropertiesService(jsonObject.getString("content"));
+            result.setSuccess(true);
+            result.setMessage(strings);
         } catch (Exception e) {
             e.printStackTrace();
-            jsonObject.put("status", false);
+            Result.error("ymlToProperties转换错误");
         }
-        return jsonObject;
+        return result;
     }
+
+    @PostMapping("/propertiesToYml")
+    public Result<?> propertiesToYml(@RequestBody JSONObject jsonObject) {
+        Result<?> result = new Result<>();
+        try {
+            String strings = ymlAndProperties.properties2YmlService(jsonObject.getString("content"));
+            result.setSuccess(true);
+            result.setMessage(strings);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Result.error("ymlToProperties转换错误");
+        }
+        return result;
+    }
+
 }

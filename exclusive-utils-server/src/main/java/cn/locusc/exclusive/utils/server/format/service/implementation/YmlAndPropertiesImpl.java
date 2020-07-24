@@ -1,10 +1,12 @@
 package cn.locusc.exclusive.utils.server.format.service.implementation;
 
-import cn.locusc.exclusive.utils.common.utils.Yml2Properties;
+import cn.locusc.exclusive.utils.common.utils.P2Y;
+import cn.locusc.exclusive.utils.common.utils.Y2P;
 import cn.locusc.exclusive.utils.server.format.service.YmlAndPropertiesService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.StringJoiner;
 
 /**
  * @author Jay Chan
@@ -15,12 +17,17 @@ import java.util.List;
 public class YmlAndPropertiesImpl implements YmlAndPropertiesService {
 
     @Override
-    public List<String> yml2PropertiesService(String content) {
-        return Yml2Properties.yml2Properties(content);
+    public String yml2PropertiesService(String content) {
+        String[] convert = Y2P.convert(content);
+        StringJoiner stringJoiner = new StringJoiner("\n");
+        for (String s : convert) {
+            stringJoiner.add(s);
+        }
+        return stringJoiner.toString();
     }
 
     @Override
-    public String properties2YmlService(String content) {
-        return null;
+    public String properties2YmlService(String content) throws IOException {
+        return P2Y.convert(content);
     }
 }

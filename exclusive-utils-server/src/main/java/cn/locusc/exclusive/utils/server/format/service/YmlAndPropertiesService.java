@@ -1,6 +1,6 @@
 package cn.locusc.exclusive.utils.server.format.service;
 
-import java.util.List;
+import java.io.IOException;
 
 /**
  * @author Jay Chan
@@ -14,12 +14,12 @@ public interface YmlAndPropertiesService {
      * @param content 输入的内容
      * @return java.lang.String
      **/
-    public List<String> yml2PropertiesService(String content);
+    public String yml2PropertiesService(String content);
 
     /**
      * properties -> yml
      * @param content 输入的内容
      * @return java.lang.String
      **/
-    public String properties2YmlService(String content);
+    public String properties2YmlService(String content) throws IOException;
 }
